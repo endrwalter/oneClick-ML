@@ -98,3 +98,79 @@ train_test_split_size = 0.2
 handle_imb_data = no
 ; number of overall iteration with differently generated train test splits (using different seed in train_test_split function)
 nested_iterations = 30
+
+```
+
+
+**Example params.yaml (snippet for RandomForestClassifier):
+
+```YAML
+
+RandomForestClassifier:
+  n_estimators: [100, 200, 300]
+  max_depth: [5, 10, None]
+  min_samples_split: [2, 5, 10]
+  min_samples_leaf: [1, 2, 4]
+SVC:
+  C: [0.1, 1, 10]
+  kernel: ['linear', 'rbf']
+  gamma: ['scale', 'auto']
+
+```
+
+### Running the Pipeline
+To run the pipeline, execute the main.py script with your configuration file:
+
+``` Bash
+python main.py --config config.ini
+
+```
+The results will be saved in the output_path specified in your config.yaml file, organized by classifier.
+
+## Project Structure
+`main.py`: The main script to run the classifier testing pipeline.
+
+`lib/`: Contains helper modules for different parts of the pipeline:
+
+`lib/store.py`: Functions for storing results, plotting ROC curves, and saving raw predictions.
+
+`lib/importance.py`: Functions related to SHAP and permutation importance analysis.
+
+`lib/utils.py`: Utility functions for loading data, managing paths, and handling configurations.
+
+`lib/pipeline.py`: Functions for defining the ML pipeline (preprocessing, classifier) and managing the grid search.
+
+`data/`: (Placeholder) Directory for input data files (e.g., input_data.csv, feature_types.json).
+
+`config.ini`: Main configuration file for the pipeline run.
+
+`params.yaml`: Parameter distributions for the randomized grid search.
+
+`results/`: (Generated) Directory where all output results and analysis will be saved.
+
+### Understanding the Pipeline
+The main function orchestrates the entire process:
+
+**Initialization:** Sets reproducibility seeds, loads configuration from config.yaml and parameter distributions from params.yaml.
+
+**Data Loading:** Loads the dataset, identifies feature types, and prepares for stratified splitting.
+
+**Nested Cross-Validation Loop:**
+
+For each classifier specified in config.ini:
+
+Initializes storage lists for metrics, predictions, and importance values.
+
+**Outer Loop (Nested Iterations):** Performs multiple train-test splits with different random states.
+
+**Inner Loop (Randomized Grid Search):** my_grid_search (from lib/pipeline.py) performs a randomized search with cross-validation on the training data to find the best hyperparameters.
+
+**Model Evaluation:** The best model from the grid search is evaluated on the held-out test set, and various performance metrics are collected.
+
+**Feature Importance:** If enabled in config.yaml, SHAP values and permutation importance are computed for the current split's best model.
+
+**Result Storage and Visualization:** After all iterations, the collected metrics, best parameters, raw predictions, and feature importance results are saved. Mean ROC curves are plotted.
+
+
+
+
