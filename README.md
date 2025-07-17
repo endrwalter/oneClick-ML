@@ -44,8 +44,6 @@ These instructions will get you a copy of the project up and running on your loc
     ```bash
     pip install -r requirements.txt
     ```
-    (You will need to create a `requirements.txt` file based on the imported libraries. A minimal `requirements.txt` would include `numpy`, `pandas`, `scikit-learn`, `PyYAML`, and `shap`.)
-
 ---
 ## Usage
 
