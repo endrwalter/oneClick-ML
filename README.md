@@ -15,7 +15,7 @@ This repository provides a robust and usable pipeline for testing machine learni
 * **Comprehensive Metric Collection:** Gathers a wide array of classification metrics for thorough performance assessment.
 * **Feature Importance Analysis:** Includes modules for computing and visualizing SHAP (SHapley Additive exPlanations) values and permutation importance to understand feature contributions.
 * **Data Imbalance Handling:** Option to incorporate strategies for dealing with imbalanced datasets.
-* **Modular and Configurable:** Uses a configuration file (`config.yaml`) and parameter distribution file (`params.yaml`) for easy customization and reproducibility.
+* **Modular and Configurable:** Uses a configuration file (`config.ini`) and parameter distribution file (`params.yaml`) for easy customization and reproducibility.
 * **Organized Output:** Stores all results, metrics, and analysis outputs in a well-structured directory hierarchy.
 
 ---
