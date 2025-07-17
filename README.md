@@ -55,27 +55,48 @@ The pipeline is executed via the `main.py` script, which takes a configuration f
 
 The project uses two primary configuration files:
 
-* `config.yaml`: Defines global parameters for the pipeline run, such as the target label, input/output paths, number of iterations, classifiers to use, and whether to perform SHAP or permutation importance analysis.
+* `config.ini`: Defines global parameters for the pipeline run, such as the target label, input/output paths, number of iterations, classifiers to use, and whether to perform SHAP or permutation importance analysis.
 * `params.yaml`: Specifies the parameter distributions for the randomized grid search for each classifier.
 
 **Example `config.yaml`:**
 
-```yaml
-y_label: 'target_column'
-input_path: 'data/input_data.csv'
-output_path: 'results/'
-path_to_feature_types: 'data/feature_types.json' # Example, if you have a file mapping feature types
-nested_iterations: 10
-train_test_split_size: 0.2
-classifiers_list: ['RandomForestClassifier', 'SVC'] # Example classifier names
-refit: 'mcc' # Metric to refit the best estimator on
-n_jobs: -1 # Number of jobs to run in parallel (-1 means all available processors)
-cv_repeats: 3
-cv_splits: 5
-n_iter: 100 # Number of parameter settings that are sampled
-shap_analysis: True
-perm_importance: True
-handle_imb_data: False # Set to true to handle imbalanced data
-include_feature_selector: False # Set to true to include feature selection in the pipeline
-n_of_features: 10 # Number of features to select if feature selector is included
-col_to_drop: ['ID'] # Columns to drop from the input data
+```ini
+; y label for this specific analysis, this label should be a column in the X.csv file present in analysis/Data/1_preprocessed_data
+y_label =  FutureDyskinesia
+; other col to drop. note that the current motor symptom at bl is always dropped - do not include it here
+col_to_drop = FutureMotorFluctuations FutureFreezing FutureFalls max_status_longi CognitiveStatus
+; perform feature selection using stat-test: True/False
+include_feature_selector = False 
+; how many features do you want to include?
+n_of_features = 17
+; path to folder that contains csv of feature types (one csv list per type)
+path_to_feature_types = ../data/clusters/feature_list_types
+; list of model to test (atm only: randomforestclassifier extratreesclassifier xgbclassifier logisticregression svc voting stacking)
+classifiers_list = randomforestclassifier extratreesclassifier xgbclassifier logisticregression svc 
+; shap analysis (True or False)
+shap_analysis = True
+; permutation importance analysis (True or False)
+perm_importance = False
+; path to input files
+input_path = ../data/clusters/neuro_dyskinesia.csv
+; path for output
+output_path = ../results/no_active_at_bl/
+
+
+
+[gridsearch params]
+n_jobs = 30
+; refit strategy for each randomized grid search cv
+refit = mcc 
+; number of repeated cross validations
+cv_repeats = 5
+; cross validation number of folds
+cv_splits = 3
+; randomized grid search cv number of iterations
+n_iter = 20
+; proportion of test/train data
+train_test_split_size = 0.2
+; how to handle imbalanced data: choose among all, SMOTE, UnderSampling, no
+handle_imb_data = no
+; number of overall iteration with differently generated train test splits (using different seed in train_test_split function)
+nested_iterations = 30
