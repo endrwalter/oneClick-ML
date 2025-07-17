@@ -58,7 +58,7 @@ The project uses two primary configuration files:
 * `config.ini`: Defines global parameters for the pipeline run, such as the target label, input/output paths, number of iterations, classifiers to use, and whether to perform SHAP or permutation importance analysis.
 * `params.yaml`: Specifies the parameter distributions for the randomized grid search for each classifier.
 
-**Example `config.yaml`:**
+**Example `config.ini`:**
 
 ```ini
 ; y label for this specific analysis, this label should be a column in the X.csv file present in analysis/Data/1_preprocessed_data
