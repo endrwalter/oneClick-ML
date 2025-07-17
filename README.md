@@ -151,25 +151,25 @@ The results will be saved in the output_path specified in your config.yaml file,
 ### Understanding the Pipeline
 The main function orchestrates the entire process:
 
-**Initialization:** Sets reproducibility seeds, loads configuration from config.yaml and parameter distributions from params.yaml.
+* **Initialization:** Sets reproducibility seeds, loads configuration from config.yaml and parameter distributions from params.yaml.
 
-**Data Loading:** Loads the dataset, identifies feature types, and prepares for stratified splitting.
+* **Data Loading:** Loads the dataset, identifies feature types, and prepares for stratified splitting.
 
-**Nested Cross-Validation Loop:**
+* **Nested Cross-Validation Loop:**
 
 For each classifier specified in config.ini:
 
-Initializes storage lists for metrics, predictions, and importance values.
+* Initializes storage lists for metrics, predictions, and importance values.
 
-**Outer Loop (Nested Iterations):** Performs multiple train-test splits with different random states.
+    * **Outer Loop (Nested Iterations):** Performs multiple train-test splits with different random states.
 
-**Inner Loop (Randomized Grid Search):** my_grid_search (from lib/pipeline.py) performs a randomized search with cross-validation on the training data to find the best hyperparameters.
+    * **Inner Loop (Randomized Grid Search):** my_grid_search (from lib/pipeline.py) performs a randomized search with cross-validation on the training data to find the best hyperparameters.
 
-**Model Evaluation:** The best model from the grid search is evaluated on the held-out test set, and various performance metrics are collected.
+    * **Model Evaluation:** The best model from the grid search is evaluated on the held-out test set, and various performance metrics are collected.
 
-**Feature Importance:** If enabled in config.yaml, SHAP values and permutation importance are computed for the current split's best model.
+    * **Feature Importance:** If enabled in config.yaml, SHAP values and permutation importance are computed for the current split's best model.
 
-**Result Storage and Visualization:** After all iterations, the collected metrics, best parameters, raw predictions, and feature importance results are saved. Mean ROC curves are plotted.
+* Result Storage and Visualization:** After all iterations, the collected metrics, best parameters, raw predictions, and feature importance results are saved. Mean ROC curves are plotted.
 
 
 
